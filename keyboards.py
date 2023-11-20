@@ -42,7 +42,6 @@ edit_or_delete_trip_markup = InlineKeyboardMarkup(inline_keyboard=[
 ], resize_keyboard=True)
 
 
-
 choose_trip_property_for_update_driver_markup = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text='Дата', callback_data='edit_date'), InlineKeyboardButton(text='Свободные места', callback_data='edit_available_seats')],
     [InlineKeyboardButton(text='Людей в компании', callback_data='edit_number_of_persons'), InlineKeyboardButton(text='Место', callback_data='edit_place')],

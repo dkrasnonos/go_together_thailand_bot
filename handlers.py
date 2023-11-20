@@ -387,6 +387,7 @@ async def process_edit_name(callback: CallbackQuery, state: FSMContext):
 async def process_set_new_name(message: Message, state: FSMContext):
     if message.text == '/delete':
         await requests.edit_vehicle(tg_id=message.from_user.id, value='')
+        await message.answer(text='Информация о транспортном средстве изменена')
     elif utils.is_vehicle_field_valid(message.text):
         await requests.edit_vehicle(tg_id=message.from_user.id, value=message.text)
         await message.answer(text='Информация о транспортном средстве изменена')
