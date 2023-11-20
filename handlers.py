@@ -378,13 +378,16 @@ async def process_set_new_name(message: Message, state: FSMContext):
 
 @router.callback_query(F.data == 'vehicle')
 async def process_edit_name(callback: CallbackQuery, state: FSMContext):
-    await callback.message.answer('Введите новое траснпортное средство')
+    person_profile = await requests.get_profile(callback.from_user.id)
+    await callback.message.answer('Введите новое траснпортное средство (для удаления введите /delete)')
     await state.set_state(EditProfileDataForm.vehicle)
 
 
 @router.message(EditProfileDataForm.vehicle)
 async def process_set_new_name(message: Message, state: FSMContext):
-    if utils.is_vehicle_field_valid(message.text):
+    if message.text == '/delete':
+        await requests.edit_vehicle(tg_id=message.from_user.id, value='')
+    elif utils.is_vehicle_field_valid(message.text):
         await requests.edit_vehicle(tg_id=message.from_user.id, value=message.text)
         await message.answer(text='Информация о транспортном средстве изменена')
         await state.clear()
@@ -414,7 +417,7 @@ async def process_get_my_trips(message: Message):
     else:
         my_trips = await requests.get_my_trips(message.from_user.id)
         text = ''
-        if my_trips is None:
+        if len(my_trips) == 0:
             await message.answer(
                 'У вас пока нет актуальных созданных поездок. Создайте свою поездку с командой /create_trip 🛵')
         else:
